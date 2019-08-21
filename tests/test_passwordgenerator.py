@@ -38,6 +38,15 @@ class TestPasswordGenerator(unittest.TestCase):
         pw = self.pwg.generate_password()
         self.assertTrue(pw.endswith(postfix), f'end characters in {pw} do not match given postfix: {postfix}')
 
+    def test_capitalize(self):
+        self.pwg = target.PasswordGenerator(number_of_words=1, capitalize=True)
+        self.assertTrue(self.pwg.capitalize, 'capitalization is expected to be True')
+        pw = self.pwg.generate_password()
+        self.assertTrue(pw[0].isupper(), 'first letter is not a uppercase')
+        self.assertTrue(pw.istitle(), 'password is not title cased')
+        self.assertTrue(pw.lower() in target.PasswordGenerator.eff_wordlist.values(), 'unknown word selected as password')
+
+
 
 if __name__ == '__main__':
     unittest.main()
