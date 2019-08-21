@@ -41,10 +41,6 @@ class TestDie(unittest.TestCase):
         self.assertLess(
             cv, self.chisq_at_5df[self.pvalue], 'the die does not appear to be unbiased')
 
-#        for i in range(len(self.rolls)):
-#            self.assertTrue(abs(1 - float(self.rolls[i])/self.expected_tally) <
-#                            self.error_ratio, f'Rolls of {i+1}\'s: Expected: {self.expected_tally:,.2f}, actual {self.rolls[i]:,}. This can happen by chance, but should be rare. Run the test again')
-
 
 if __name__ == '__main__':
     unittest.main()
