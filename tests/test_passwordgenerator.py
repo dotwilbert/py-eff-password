@@ -31,6 +31,13 @@ class TestPasswordGenerator(unittest.TestCase):
         for w in word_list:
             self.assertTrue( w in target.PasswordGenerator.eff_wordlist.values(), f'unexpected value {w} in generated password' )
 
+    def test_postfix(self):
+        postfix = '5$'
+        self.pwg = target.PasswordGenerator(number_of_words=1, postfix=postfix)
+        self.assertTrue( self.pwg.postfix == postfix, f'postfix expected: {postfix}, actual: {self.pwg.postfix}')
+        pw = self.pwg.generate_password()
+        self.assertTrue(pw.endswith(postfix), f'end characters in {pw} do not match given postfix: {postfix}')
+
 
 if __name__ == '__main__':
     unittest.main()
