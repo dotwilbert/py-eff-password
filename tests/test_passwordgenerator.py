@@ -21,9 +21,12 @@ class TestPasswordGenerator(unittest.TestCase):
     
     def test_number_of_words(self):
         die = target.Die()
+        sep = '-'
+        # Some random number from 3 to 8, both included.
         no_of_words = 9 - die.roll()
         self.pwg.number_of_words = no_of_words
-        word_list = self.pwg.generate_password().split('-')
+        self.pwg.separator = sep
+        word_list = self.pwg.generate_password().split(sep)
         self.assertEqual( no_of_words, len(word_list), 'generated password does not have the expected number of words')
         for w in word_list:
             self.assertTrue( w in target.PasswordGenerator.eff_wordlist.values(), f'unexpected value {w} in generated password' )

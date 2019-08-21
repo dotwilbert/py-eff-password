@@ -1960,8 +1960,9 @@ class PasswordGenerator:
         tuple([6,6,6,6,3]): 'zookeeper', tuple([6,6,6,6,4]): 'zoologist', tuple([6,6,6,6,5]): 'zoology'  , tuple([6,6,6,6,6]): 'zoom'
     }
 
-    def __init__(self, number_of_words=5):
+    def __init__(self, number_of_words=5, separator=''):
         self.number_of_words = number_of_words
+        self.separator = separator
         self.die = Die()
 
     def generate_password(self) -> str:
@@ -1973,4 +1974,4 @@ class PasswordGenerator:
         
             word = PasswordGenerator.eff_wordlist[tuple(rolls)]
             words.append(word)
-        return '-'.join(words)
+        return self.separator.join(words)
