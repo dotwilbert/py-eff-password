@@ -12,20 +12,34 @@ else:
 
 class TestDie(unittest.TestCase):
 
+    chisq_at_5df = {
+        0.05:  11.070,
+        0.025: 12.833,
+        0.02:  13.388,
+        0.01:  15.086,
+        0.005: 16.750
+    }
+
     def setUp(self):
         self.die = target.Die()
-        self.count_rolls = 1_000_000
-        self.error = 0.005
+        self.count_rolls = 100_000
+        self.pvalue = 0.01
         self.expected_tally = 1.0 / 6.0 * float(self.count_rolls)
 
     def test_die(self):
+        # run experiment
         self.rolls = [0, 0, 0, 0, 0, 0]
         for _ in range(self.count_rolls):
             self.rolls[self.die.roll() - 1] += 1
 
+        # null-hypothesis: die is not biased
+        # calculate chi-squared statistic
+        cv = 0
         for i in range(len(self.rolls)):
-            self.assertTrue(abs(1 - float(self.rolls[i])/self.expected_tally) <
-                            self.error, f'Count of rolls with value {i} is outside of expectation')
+            cv += ((self.rolls[i] - self.expected_tally)
+                   ** 2) / self.expected_tally
+        self.assertLess(
+            cv, self.chisq_at_5df[self.pvalue], 'the die does not appear to be unbiased')
 
 
 if __name__ == '__main__':
