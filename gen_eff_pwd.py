@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import argparse
 import secrets
 
 
@@ -1978,3 +1979,75 @@ class PasswordGenerator:
                 word = word.title()
             words.append(word)
         return self.separator.join(words) + self.postfix
+
+
+class Configurator:
+
+    class _Configurator:
+
+        def __init__(self, no_of_passwords=1, no_of_words=5, separator='', postfix='', capitalize=False):
+            self._no_of_words = no_of_words
+            self._separator = separator
+            self._postfix = postfix
+            self._no_of_passwords = no_of_passwords
+            self._capitalize = capitalize
+            Configurator._instance = self
+
+        @property
+        def no_of_words(self):
+            """Number of words the password will consist of (default 5)"""
+            return self._no_of_words
+
+        @property
+        def separator(self):
+            """Character to seperate the words in the password (default empty)."""
+            return self._separator
+
+        @property
+        def postfix(self):
+            """Characters to append to password. Some websites require special characters and numbers. Examples to use are '5$' or '2#'"""
+            return self._postfix
+
+        @property
+        def no_of_passwords(self):
+            """Number of passwords to generate (default 1)."""
+            return self._no_of_passwords
+
+        @property
+        def capitalize(self):
+            """Flag indicating capitalization of words. Some websites require capital letters in passwords"""
+            return self._capitalize
+
+    _instance: _Configurator = None
+
+    def __init__(self, no_of_passwords, no_of_words, separator, postfix, capitalize):
+        assert Configurator._instance is None, "configuration already initialized"
+        Configurator._instance = Configurator._Configurator(
+            no_of_passwords, no_of_words, separator, postfix, capitalize)
+
+    @staticmethod
+    def nuke_config():
+      """Clear the configuration"""
+      Configurator._instance = None
+
+    @staticmethod
+    def get_config() -> _Configurator:
+        """Retrieve a configuration object"""
+        return Configurator._instance
+
+
+if __name__ == '__main__':
+    # parse arguments
+    parser = argparse.ArgumentParser(description='Generate Passwords')
+    parser.add_argument('-n', '--number_of_passwords', type=int, help='number of passwords to generate (default 1)', default=1)
+    parser.add_argument('-w', '--number_of_words', type=int, help='number of words per password (default 5)', default=5)
+    parser.add_argument('-s', '--separator', help='separator between words', default='')
+    parser.add_argument('-p', '--postfix', help="characters to append to password. Some websites require special characters and numbers. Examples to use are '5$' or '2#'", default='')
+    parser.add_argument('-c', '--capitalize', action='store_true', help='capitalize the words used in the passwords (default false). Some websites require upper- and lowercase.')
+    args = parser.parse_args()
+    # Store configuration
+    Configurator(args.number_of_passwords, args.number_of_words, args.separator, args.postfix, args.capitalize)
+    cfg = Configurator.get_config()
+    pwg = PasswordGenerator(cfg.no_of_words, cfg.separator, cfg.postfix, cfg.capitalize)
+    for _ in range(cfg.no_of_passwords):
+        print(f'{pwg.generate_password()}')
