@@ -46,7 +46,6 @@ class TestDie(unittest.TestCase):
         for _ in range(self.number_of_votes):
             if not self.chisquare_accept_fair():
                 failure_count += 1
-        print(f'Failures: {failure_count} out of {self.number_of_votes}')
         self.assertLessEqual(
             failure_count, self.failures_threshold, 'the die does not appear to be unbiased')
 
