@@ -55,3 +55,17 @@ Giggling^Prelude^Fable^Seventeen^Declared^Procreate^Darling5#
 Angriness^Unlivable^Shampoo^Celibacy^Matted^Depose^Unscented5#
 Foam^Handled^Vaporizer^Contact^Chemo^Trodden^Fetch5#
 ```
+
+# Development tools
+
+To generate the content of the eff_wordlist dictionary:
+
+```bash
+curl -sS "https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt" | ./4on1.awk > list.lst
+```
+
+You can copy the content, after removing the last comma, in the source code, in case the list is updated. Just get the new url. Or you can use your own word list if it provides better usability.
+
+```bash
+./4on1.awk my_better_wordlist.txt > list.lst
+```
