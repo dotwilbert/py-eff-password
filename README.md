@@ -1,5 +1,9 @@
 # py-eff-password
 
+The original idea to use dice for password generation came from [Arnold G. Reinhold](http://world.std.com/~reinhold/diceware.html). [Wikipedia](https://en.wikipedia.org/wiki/Diceware) discusses Diceware&trade; and references the year 1995. Reinhold trademarked Diceware&trade;.
+
+## EFF
+
 Generate passwords according to https://www.eff.org/dice. It uses the long word list, that has been optimized for memorability, readability and ease of input, or more general, usability.
 
 The following table is a indication of of the password strength
